@@ -4,6 +4,7 @@ import type { OrderDetails } from '../types';
 interface OrderPreviewProps {
     orderDetails: OrderDetails;
     viewMode: 'full' | 'party' | 'orderTo';
+    companyName?: string;
 }
 
 const DetailItem: React.FC<{ label: string; value?: string | null; isEmphasized?: boolean }> = ({ label, value, isEmphasized = false }) => (
@@ -28,7 +29,14 @@ const formatDate = (dateString: string): string => {
     return `${day}-${month}-${year}`;
 };
 
-export const OrderPreview: React.FC<OrderPreviewProps> = ({ orderDetails, viewMode }) => {
+const getGridColsClass = (count: number): string => {
+    if (count <= 1) return 'grid-cols-1';
+    if (count === 2) return 'grid-cols-2';
+    return 'grid-cols-3';
+};
+
+
+export const OrderPreview: React.FC<OrderPreviewProps> = ({ orderDetails, viewMode, companyName }) => {
     const { 
         party, orderTo, design, factoryDesignNo, goldWt, goldKt, goldColour, diaWt, diaQuality, diaPrice, goldPrice,
         size, orderDate, deliveryDate, comments, images
@@ -48,15 +56,24 @@ export const OrderPreview: React.FC<OrderPreviewProps> = ({ orderDetails, viewMo
                 <h3 className="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-500 tracking-wider">
                     Jewelry Order
                 </h3>
+                {companyName && (
+                    <h4 className="text-center text-amber-200/80 font-semibold text-lg mt-1">
+                        {companyName}
+                    </h4>
+                )}
             </div>
 
             <div className="p-4 space-y-4">
                 {images && images.length > 0 && (
-                     <div className={`grid gap-2 grid-cols-${Math.min(images.length, 3)}`}>
+                     <div className={`grid gap-2 ${getGridColsClass(images.length)}`}>
                         {images.map((img, index) => (
-                            <div key={index} className="w-full aspect-square rounded-lg overflow-hidden bg-gray-700">
-                                <img src={img} alt={`Design Preview ${index + 1}`} className="w-full h-full object-contain" />
-                            </div>
+                            <div 
+                                key={index}
+                                role="img"
+                                aria-label={`Design Preview ${index + 1}`}
+                                className="w-full aspect-square rounded-lg overflow-hidden bg-gray-700 bg-no-repeat bg-center bg-contain"
+                                style={{ backgroundImage: `url(${img})` }}
+                            />
                         ))}
                     </div>
                 )}

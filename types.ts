@@ -19,3 +19,9 @@ export interface OrderDetails {
   comments: string;
   images: string[];
 }
+
+export interface UserDetails {
+  name: string;
+  company: string;
+  mobile: string;
+}

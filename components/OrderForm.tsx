@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { OrderDetails } from '../types';
 import { Card } from './ui/Card';
 import { Input } from './ui/Input';
@@ -13,6 +13,7 @@ interface OrderFormProps {
 }
 
 export const OrderForm: React.FC<OrderFormProps> = ({ orderDetails, setOrderDetails, onReset }) => {
+    const [imageError, setImageError] = useState('');
     
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -24,7 +25,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ orderDetails, setOrderDeta
             const files = Array.from(e.target.files);
             const currentImageCount = orderDetails.images.length;
             if (currentImageCount + files.length > 3) {
-                alert('You can upload a maximum of 3 images.');
+                setImageError('You can upload a maximum of 3 images.');
+                setTimeout(() => setImageError(''), 3000); // Clear error after 3 seconds
                 e.target.value = ''; // Reset file input
                 return;
             }
@@ -124,7 +126,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ orderDetails, setOrderDeta
                     />
                 </div>
                 <div>
-                    <label className="block text-xs font-medium text-gray-400 uppercase mb-1">Photos (up to 3)</label>
+                    <div className="flex justify-between items-center mb-1">
+                        <label className="block text-xs font-medium text-gray-400 uppercase">Photos (up to 3)</label>
+                        {imageError && <p className="text-sm text-red-400 animate-pulse">{imageError}</p>}
+                    </div>
                      <div className="flex items-center gap-2">
                         <div className="grid grid-cols-3 gap-2 flex-grow">
                             {orderDetails.images.map((image, index) => (
