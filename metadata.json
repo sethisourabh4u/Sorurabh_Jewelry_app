@@ -1,0 +1,5 @@
+{
+  "name": "Jewelry Order Creator",
+  "description": "A web application to create and manage jewelry orders. It allows users to input order details, upload a photo of the design, and export customized order cards as JPG images for both the customer (party) and the workshop (order to).",
+  "requestFramePermissions": []
+}
