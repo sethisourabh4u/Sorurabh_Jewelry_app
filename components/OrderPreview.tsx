@@ -71,7 +71,7 @@ export const OrderPreview: React.FC<OrderPreviewProps> = ({ orderDetails, viewMo
                         )}
                         {viewMode !== 'party' && <DetailItem label="Order To" value={orderTo} isEmphasized />}
                         {viewMode !== 'party' && factoryDesignNo && (
-                            <DetailItem label="Factory No." value={factoryDesignNo} />
+                            <DetailItem label="Factory Design No:" value={factoryDesignNo} />
                         )}
                     </div>
                     <div className="space-y-2 text-right">
